@@ -1,20 +1,19 @@
 const express = require("express");
 const config = require("./utils/config");
+const Blog = require("./models/blog");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
-});
-
-const Blog = mongoose.model("Blog", blogSchema);
-
 const mongoUrl = config.MONGODB_URI;
-mongoose.connect(mongoUrl);
+mongoose
+  .connect(mongoUrl)
+  .then(() => {
+    console.log("connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("error connecting to MongoDB:", error.message);
+  });
 
 app.use(cors());
 app.use(express.json());
